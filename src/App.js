@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import SquareComponent from "./SquareComponent";
+
+/**
+ * This functional component is rendered in the root div
+ * It renders the tic-tac-toe board and all the logic is present in this component
+ */
 function App() {
   const [gameState, updateGameState] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
   const [isXChance, updateIsXChance] = useState(false);
+
+  /**
+   * This function handles the clicking of the square component boxes
+   * @param {*} index 
+   * @param {*} index1 
+   */
   const handleSquareClicked = (index, index1) => {
     let gameStateArray = [...gameState];
     gameStateArray[index][index1] = isXChance ? "X" : "0";
@@ -11,14 +22,39 @@ function App() {
     updateIsXChance(!isXChance);
   }
 
+
   useEffect(() => {
     const winner = checkWinner();
+    const isDraw = checkDraw();
+
+    /** If we have found a winner */
     if (winner) {
       alert(`Congratulations! "${winner}" has won the Game`);
       updateGameState([["", "", ""], ["", "", ""], ["", "", ""]]);
     }
-  }, [gameState])
+    /** If the game is draw */
+    else if (isDraw) {
+      alert(`The Game is draw`);
+      updateGameState([["", "", ""], ["", "", ""], ["", "", ""]]);
+    }
+  }, [gameState])// eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * This function checks whether the game has been draw or not
+   */
+  const checkDraw = () => {
+    let result = false;
+    for (let count = 0; count < gameState.length; count++) {
+      result = gameState[count].every(function (e) {
+        return e !== "";
+      });
+    }
+    return result;
+  }
+
+  /**
+   * This function checks whether we have found a winner or not
+   */
   const checkWinner = () => {
     const lines = [
       [[0, 0], [0, 1], [0, 2]],
@@ -45,6 +81,7 @@ function App() {
     return null;
   }
 
+  /** Renders the HTML */
   return (
     <div className="app-header">
       <p className="heading-text">React Tic-Tac-Toe</p>
@@ -67,4 +104,5 @@ function App() {
   );
 }
 
+/** Export the component */
 export default App;

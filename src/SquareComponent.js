@@ -1,5 +1,9 @@
 import './App.css';
 
+/**
+ * This functional component is used for rendering the individual square component
+ * @param {*} props 
+ */
 function SqaureComponent(props) {
     const classes = props.className ? `${props.className} square` : `square`;
     return (
@@ -9,4 +13,5 @@ function SqaureComponent(props) {
     );
 }
 
+/** Export the component */
 export default SqaureComponent;
